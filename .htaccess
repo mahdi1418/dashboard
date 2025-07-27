@@ -1,0 +1,10 @@
+Options -Indexes
+
+RewriteEngine On
+
+# If the requested file exists (like handle.php), serve it
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Otherwise, rewrite to index.php
+RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
