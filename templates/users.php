@@ -14,9 +14,6 @@ $userNumber = $_SESSION['user'];
 $sql = "SELECT * FROM `users` WHERE `user_id` = '$userNumber'";
 $output2 = db_select_one($sql);
 
-$check = mysqli_query($conn, "SELECT * FROM `products` WHERE `user_id` = '$userNumber'");
-$num_rows = mysqli_num_rows($check);
-$output = mysqli_fetch_all($check, MYSQLI_NUM);
 ?>
 
 <body class="sb-nav-fixed">
@@ -80,12 +77,20 @@ $output = mysqli_fetch_all($check, MYSQLI_NUM);
 
             </nav>
         </div>
-        <button type="button" class="btn btn-primary position-absolute" data-bs-toggle="modal" data-bs-target="#editUserModal" style="right: 40%;top: 150px;">
-            change user info 
+        <div class="position-absolute text-center" style="right: 37.7%;top: 120px;">
+            <div class="d-flex">
+                <h3 class="me-2"><?= $output2[1] ?></h3>
+                <h3><?= $output2[2] ?></h3>
+            </div>
+            <h5 class="text-center mb-3 text-secondary"><?= $output2[3] ?></h5>
+            <img src="<?php echo base_url() . '/uploads/' . $output2[5] ?>" width="125px" height="125px" style="border-radius: 50%;">
+        </div>
+        <button type="button" class="btn btn-primary position-absolute" data-bs-toggle="modal" data-bs-target="#editUserModal" style="right: 40%;top: 350px;">
+            change user info
         </button>
 
         <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom-offset-right">
                 <div class="modal-content">
                     <form id="editUserForm" action="handle.php" method="POST" enctype="multipart/form-data">
                         <div class="modal-header">
@@ -95,19 +100,19 @@ $output = mysqli_fetch_all($check, MYSQLI_NUM);
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="userName" class="form-label">name</label>
-                                <input type="text" class="form-control" id="userName" name="userName" placeholder="enter name" required>
+                                <input type="text" class="form-control" id="userName" name="userName" placeholder="<?php echo $output2['1']; ?>" required>
                             </div>
                             <div class="mb-3">
                                 <label for="userName" class="form-label">last name</label>
-                                <input type="text" class="form-control" id="userName" name="userlName" placeholder="enter last name" required>
+                                <input type="text" class="form-control" id="userName" name="userlName" placeholder="<?php echo $output2['2']; ?>" required>
                             </div>
                             <div class="mb-3">
                                 <label for="userEmail" class="form-label">email</label>
-                                <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="enter email" required>
+                                <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="<?php echo $output2['3']; ?>" required>
                             </div>
                             <div class="mb-3">
                                 <label for="userEmail" class="form-label">image</label>
-                                 <input type="file" class="form-control" id="userfile" name="files" placeholder="enter image" required>
+                                <input type="file" class="form-control" id="userfile" name="files" required>
                             </div>
 
                         </div>

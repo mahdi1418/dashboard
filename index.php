@@ -13,6 +13,7 @@ $routes = [
     'panel' => 'templates/panel.php',
     'products' => 'templates/all-product.php',
     'users' => 'templates/users.php',
+    'pass' => 'templates/pass.php',
     'logout' => 'templates/logout.php'
 ];
 

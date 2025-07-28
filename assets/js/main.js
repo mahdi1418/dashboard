@@ -15,7 +15,8 @@ $(document).ready(function () {
                 name2: $name2,
                 email: $email,
                 pass: $pass,
-                pass2: $pass2
+                pass2: $pass2,
+                type: 'register'
             },
             success: function (response) {
                 $('#result').html(response);
@@ -37,7 +38,8 @@ $(document).ready(function () {
             dataType: "json",
             data: {
                 email: $email,
-                password: $password
+                password: $password,
+                type: 'login'
             },
             success: function (response) {
                 $('#result').html(response);
@@ -54,6 +56,7 @@ $(document).ready(function () {
         $title = $('#add_title_product').val();
         $desc = $('#add_desc_product').val();
         $price = $('#add_price_product').val();
+        $category = $('#category').val();
         $.ajax({
             url: 'handle.php',
             type: 'POST',
@@ -61,7 +64,9 @@ $(document).ready(function () {
             data: {
                 add_title_product: $title,
                 add_desc_product: $desc,
-                add_price_product: $price
+                add_price_product: $price,
+                category: $category,
+                type: 'add_pro'
             },
             success: function (response) {
                 $('#result').html(response);
@@ -76,6 +81,7 @@ $(document).ready(function () {
                          <div>
                              <h5 class="m-0 mb-1 text-danger">${response.price} $</h5>
                              <h6 class="m-0"></h6>
+                            <i class="fas fa-ellipsis-v px-3 py-2 pe-1 pt-2 mt-2"></i>
                          </div>
                      </div>
                 `;
@@ -91,10 +97,27 @@ $(document).ready(function () {
     });
     $('#delete').click(function () {
         if (confirm('Are you sure you want to delete this product?')) {
-            console.log('محصول حذف شد');
+
+            $proid = $('#proid').val();
+            $.ajax({
+                url: 'handle.php',
+                type: 'POST',
+                data: {
+                    proid: $proid,
+                    type: 'delete'
+                },
+                success: function (response) {
+                    console.log('The product has been removed');
+                },
+                error: function () {
+                }
+            });
+            history.go(0);
+            location.reload();
         } else {
-            console.log('عملیات حذف لغو شد');
+            console.log('The delete operation was cancelled');
         }
+
     });
     $('#pro_serach').keyup(function (e) {
         $word = $(this).val();
@@ -116,5 +139,16 @@ $(document).ready(function () {
         } else {
             $('#res_search').html('');
         }
+    });
+
+    const swiper = new Swiper('.swiper', {
+        slidesPerView: 1.3,
+        spaceBetween: 0,
+        loop: true,
+        centeredSlides: true,
+        autoplay: {
+            delay: 250,
+            disableOnInteraction: false,
+        },
     });
 });

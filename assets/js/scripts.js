@@ -15,22 +15,18 @@ window.addEventListener('DOMContentLoaded', event => {
     }
 
 });
-function openModal() {
-    document.getElementById('proModal').style.display = 'flex';
+function openModal(id) {
+    document.getElementById().style.display = 'flex';
 }
 window.onclick = function (event) {
-    if (event.target == document.getElementById('proModal')) {
-        document.getElementById('proModal').style.display = 'none';
+    const pro_search = document.getElementById('pro_search');
+    if (!pro_search.contains(event.target)) {
+        const items = pro_search.querySelectorAll('li');
+        items.forEach(li => {
+            li.style.display = 'none';
+        });
     }
 }
-window.onclick = function(event) {
-  const pro_search = document.getElementById('pro_search');
-  if (!pro_search.contains(event.target)) {
-    const items = pro_search.querySelectorAll('li');
-    items.forEach(li => {
-      li.style.display = 'none';
-    });  }
-}
 
 
-  
+

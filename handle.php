@@ -4,7 +4,7 @@ $conn = db_conn();
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (isset($_POST['name']) && isset($_POST['name2']) && isset($_POST['email']) && isset($_POST['pass']) && isset($_POST['pass2'])) {
+if (isset($_POST['type']) && $_POST['type'] === 'register') {
     if (empty($_POST['email']) || empty($_POST['pass']) || empty($_POST['name']) || empty($_POST['name2']) || empty($_POST['pass2'])) {
         $error = 'please fill out all fields';
         echo json_encode($error);
@@ -41,7 +41,7 @@ if (isset($_POST['name']) && isset($_POST['name2']) && isset($_POST['email']) &&
             }
         }
     }
-} else if (isset($_POST['email']) && isset($_POST['password'])) {
+} else if (isset($_POST['type']) && $_POST['type'] === 'login') {
     if (empty($_POST['email']) || empty($_POST['password'])) {
         $error = 'please fill out all fields';
         echo json_encode($error);
@@ -62,17 +62,19 @@ if (isset($_POST['name']) && isset($_POST['name2']) && isset($_POST['email']) &&
             echo json_encode($error);
         }
     }
-} else if (isset($_POST['add_title_product']) && isset($_POST['add_desc_product']) && isset($_POST['add_price_product'])) {
+} else if (isset($_POST['type']) && $_POST['type'] === 'add_pro') {
     $conn = db_conn();
     $userNumber = $_SESSION['user'];
     $title = $_POST['add_title_product'];
     $desc = $_POST['add_desc_product'];
     $price = $_POST['add_price_product'];
+    $category = $_POST['category'];
     $data = [
         'title' => $title,
         'desc' => $desc,
         'price' => $price,
-        'user_id' => $userNumber
+        'user_id' => $userNumber,
+        'category' => $category
     ];
 
     $insert = db_insert('products', $data);
@@ -80,19 +82,18 @@ if (isset($_POST['name']) && isset($_POST['name2']) && isset($_POST['email']) &&
         echo json_encode([
             'title' => $title,
             'desc' => $desc,
-            'price' => $price
+            'price' => $price,
+            'category' => $category
         ]);
     } else {
         $error = 'Added product failed. Please try again.';
         echo json_encode($error);
     }
-} else if (isset($_GET['type'])) {
-    if ($_GET['type'] == 'delete') {
-        $conn = db_conn();
-        $id = $_GET['pro_id'];
-        mysqli_query($conn, "DELETE FROM `products` WHERE `product_id` = '$id'");
-        header("location:$base_url/products");
-    }
+} else if (isset($_POST['type']) && $_POST['type'] === 'delete') {
+    $conn = db_conn();
+    $id = $_POST['proid'];
+    mysqli_query($conn, "DELETE FROM `products` WHERE `product_id` = '$id'");
+    $succ;
 } else if (isset($_POST['word']) && isset($_POST['type'])) {
     if ($_POST['type'] == 'pro') {
         $word = $_POST['word'];
@@ -107,13 +108,13 @@ if (isset($_POST['name']) && isset($_POST['name2']) && isset($_POST['email']) &&
                         <p class="m-0 h4"><?= $item[1] ?></p>
                         <p class="m-0"><?= $item[2] ?></p>
                     </div>
-                        <p class="m-0 h6 text-danger mt-4"><?= $item[3] ?>$</p>
+                    <p class="m-0 h6 text-danger mt-4"><?= $item[3] ?>$</p>
                 </li>
             <?php endforeach; ?>
 <?php
         }
     }
-}else if (isset($_POST['edit_user'])) {
+} else if (isset($_POST['edit_user'])) {
     $conn = db_conn();
     $userNumber = $_SESSION['user'];
     $tempFile = $_FILES['files']['tmp_name'];
@@ -132,8 +133,27 @@ if (isset($_POST['name']) && isset($_POST['name2']) && isset($_POST['email']) &&
     } else {
         header("location:$base_url/panel");
         exit;
-  }  
-}else {
+    }
+} else if (isset($_POST['img_pro_upload'])) {
+    $conn = db_conn();
+    $userNumber = $_SESSION['user'];
+    $tempFile = $_FILES['pro_image']['tmp_name'];
+    $folder = 'uploads/';
+    $new_name = 'file_' . time() . '.png';
+    $status = move_uploaded_file($tempFile, $folder . $new_name);
+
+    $proid = $_POST['product_id'];
+    $data = [
+        'pro_image' => $new_name,
+        'product_id' => $proid
+    ];
+
+    $insert = db_insert('image_pro', $data);
+    if ($insert) {
+        header("location:$base_url/products");
+        exit;
+    }
+} else {
     $error = "Something went wrong, try again later.";
     echo json_encode($error);
 }

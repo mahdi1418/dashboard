@@ -42,6 +42,7 @@ if (isset($_SESSION['user'])) {
                                     </form>
                                 </div>
                                 <div class="card-footer text-center py-3">
+                                    <a class="small" href="<?php base_url() ?>pass">Forgot Password?</a>
                                     <div class="small"><a href="<?php base_url() ?>register">Need an account? Sign up!</a></div>
                                 </div>
                             </div>
