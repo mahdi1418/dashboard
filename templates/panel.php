@@ -14,7 +14,7 @@ $userNumber = $_SESSION['user'];
 $sql = "SELECT * FROM `users` WHERE `user_id` = '$userNumber'";
 $output2 = db_select_one($sql);
 ?>
-
+<title>Panel</title>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
@@ -36,7 +36,7 @@ $output2 = db_select_one($sql);
                     <i class="fas fa-fw"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="">Settings</a></li>
+                    <li><a class="dropdown-item" href="<?php base_url() ?>users">Settings</a></li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
@@ -66,7 +66,7 @@ $output2 = db_select_one($sql);
                             products
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                        <a class="nav-link collapsed" href="<?php base_url() ?>orders">
                             <div class="sb-nav-link-icon"><i class="fas fa-receipt"></i></div>
                             orders
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -88,7 +88,7 @@ $output2 = db_select_one($sql);
                             <div class="card bg-success text-white mb-4">
                                 <div class="card-body">users</div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
+                                    <a class="small text-white stretched-link" href="<?php base_url() ?>users">View Details</a>
                                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@ $output2 = db_select_one($sql);
                             <div class="card bg-warning text-white mb-4">
                                 <div class="card-body">orders</div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
+                                    <a class="small text-white stretched-link" href="<?php base_url() ?>orders">View Details</a>
                                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                 </div>
                             </div>
@@ -106,7 +106,7 @@ $output2 = db_select_one($sql);
                             <div class="card bg-danger text-white mb-4">
                                 <div class="card-body">products</div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
+                                    <a class="small text-white stretched-link" href="<?php base_url() ?>products">View Details</a>
                                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                 </div>
                             </div>

@@ -14,6 +14,7 @@ $routes = [
     'products' => 'templates/all-product.php',
     'users' => 'templates/users.php',
     'pass' => 'templates/pass.php',
+    'orders' => 'templates/orders.php',
     'logout' => 'templates/logout.php'
 ];
 

@@ -42,11 +42,11 @@
         } else {
             $category = "";
         }
-        $check = mysqli_query($conn, "SELECT * FROM `products` WHERE `user_id` = '$userNumber' AND `category` = '$category' ORDER BY $sort");
+        $check = mysqli_query($conn, "SELECT * FROM `products` WHERE  `category` = '$category' ORDER BY $sort");
         $num_rows = mysqli_num_rows($check);
         $output = mysqli_fetch_all($check, MYSQLI_NUM);
     } else {
-        $check = mysqli_query($conn, "SELECT * FROM `products` WHERE `user_id` = '$userNumber' ORDER BY $sort");
+        $check = mysqli_query($conn, "SELECT * FROM `products` ORDER BY $sort");
         $num_rows = mysqli_num_rows($check);
         $output = mysqli_fetch_all($check, MYSQLI_NUM);
         $category = "";
@@ -70,7 +70,7 @@
                      <div id="photo"><img src="<?php echo base_url() . '/uploads/' . $output2['5']; ?>"></div>
                  </a>
                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                     <li><a class="dropdown-item" href="">Settings</a></li>
+                     <li><a class="dropdown-item" href="<?php base_url() ?>users">Settings</a></li>
                      <li>
                          <hr class="dropdown-divider" />
                      </li>
@@ -100,7 +100,7 @@
                              products
                              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                          </a>
-                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                         <a class="nav-link collapsed" href="<?php base_url() ?>orders">
                              <div class="sb-nav-link-icon"><i class="fas fa-receipt"></i></div>
                              orders
                              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -110,6 +110,7 @@
 
              </nav>
          </div>
+         
          <div id="result" class="position-absolute" style="right: 50%; top: 150px; transform: translateX(50%);">
          </div>
          <!-- 🧾 Content Area -->
@@ -168,7 +169,7 @@
                      </div>
                  </div>
              </div>
-             <button class="btn btn-success" onclick="openModal('add_product')" style="margin-left: 255px; width: 83%;">New</button>
+             <button class="btn btn-success" onclick="openModal('add_product')" style="margin-left: 320px; width: 73%;">New</button>
 
              <div class="container-fluid px-4 me-0" style="width: 85%;" id="productList">
                  <?php

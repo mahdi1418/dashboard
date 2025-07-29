@@ -92,8 +92,14 @@ if (isset($_POST['type']) && $_POST['type'] === 'register') {
 } else if (isset($_POST['type']) && $_POST['type'] === 'delete') {
     $conn = db_conn();
     $id = $_POST['proid'];
-    mysqli_query($conn, "DELETE FROM `products` WHERE `product_id` = '$id'");
-    $succ;
+    $userNumber = $_SESSION['user'];
+
+    $success = mysqli_query($conn, "DELETE FROM `products` WHERE `product_id` = '$id' AND `user_id` = '$userNumber'");
+    if($success){
+        $success = "success";
+    }else{
+        $success = "not done";
+    }
 } else if (isset($_POST['word']) && isset($_POST['type'])) {
     if ($_POST['type'] == 'pro') {
         $word = $_POST['word'];
