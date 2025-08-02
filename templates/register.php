@@ -59,7 +59,7 @@ if (isset($_SESSION['user'])) {
                                             </div>
                                         </div>
                                         <div class="mt-4 mb-0">
-                                            <div class="d-grid"><button type="submit" class="btn btn-primary btn-block">Create Account</button></div>
+                                            <div class="d-grid"><button type="submit" class="btn btn-primary btn-block" id="button">Create Account</button></div>
                                             <div id="result" class="my-1 d-flex align-items-center justify-content-center"></div>
                                         </div>
                                     </form>

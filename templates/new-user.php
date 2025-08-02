@@ -1,26 +1,26 @@
 <?php
 require_once 'loader.php';
 require_once 'header.php';
-$conn = db_conn();
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 if (!isset($_SESSION['user'])) {
     header("location:$base_url/login");
-    exit;
 }
 $userNumber = $_SESSION['user'];
 
 $sql = "SELECT * FROM `users` WHERE `user_id` = '$userNumber'";
 $output2 = db_select_one($sql);
+
 ?>
-<title>Panel</title>
+
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="<?php base_url() ?>panel">Dashboard</a>
         <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
             <div class="input-group">
@@ -109,48 +109,49 @@ $output2 = db_select_one($sql);
                 </div>
             </nav>
         </div>
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Dashboard</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
-                    <div class="row">
-                        <div class="col-xl-4 col-md-6">
-                            <div class="card bg-success text-white mb-4">
-                                <div class="card-body">users</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="<?php base_url() ?>users">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-6">
-                            <div class="card bg-warning text-white mb-4">
-                                <div class="card-body">orders</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="<?php base_url() ?>orders">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-6">
-                            <div class="card bg-danger text-white mb-4">
-                                <div class="card-body">products</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="<?php base_url() ?>products">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
 
+    </div>
+
+    <div id="layoutSidenav_content" class="p-4 position-absolute w-100 justify-content-start mt-5" style="right: 0; text-align: -webkit-center; width: 85% !important">
+
+        <div class="modal-content">
+            <form id="add_user" method="POST">
+                <div class="modal-header">
+                    <h3 class="modal-title me-1 w-100 text-center" id="editUserModalLabel"> new user </h3>
+                </div>
+                <div class="modal-body"style="text-align: left;">
+                    <div class="mb-3">
+                        <label for="userName" class="form-label">name</label>
+                        <input type="text" class="form-control" id="newuserName" name="newuserName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userName" class="form-label">last name</label>
+                        <input type="text" class="form-control" id="newuserlName" name="newuserlName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userEmail" class="form-label">email</label>
+                        <input type="email" class="form-control" id="newuserEmail" name="newuserEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userEmail" class="form-label">password</label>
+                        <input type="password" class="form-control" id="newuserPass" name="newuserPass" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userEmail" class="form-label">Confirm password</label>
+                        <input type="password" class="form-control" id="newuserPass2" name="newuserPass2" required>
                     </div>
                 </div>
-            </main>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" name="add_user">add</button>
+                </div>
+            </form>
+            <div id="result" class="my-1 d-flex align-items-center justify-content-center"></div>
 
         </div>
+
     </div>
+    </div>
+
     <?php
     require_once 'footer.php';
     ?>

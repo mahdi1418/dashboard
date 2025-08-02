@@ -22,12 +22,32 @@ function create_tables()
         `category` VARCHAR(250) NULL
     );';
   mysqli_query(db_conn(), $create_products);
-  $create_image_pro = 'CREATE TABLE IF NOT EXISTS `image_pro` (
-        `image_pro_id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        `pro_image` VARCHAR(200) NULL,
+  $create_image_pro = 'CREATE TABLE IF NOT EXISTS `images` (
+        `image_id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        `image_url` VARCHAR(200) NULL,
         `create_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `product_id` INT UNSIGNED NULL
     );';
   mysqli_query(db_conn(), $create_image_pro);
+  $create_category = 'CREATE TABLE IF NOT EXISTS `category` (
+        `category_id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        `category_name` VARCHAR(200) NULL
+    );';
+  mysqli_query(db_conn(), $create_category);
+
+  $create_order = 'CREATE TABLE IF NOT EXISTS `orders` (
+        `order_id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        `customer_id` INT NULL,
+        `status` varchar(200) NOT NULL DEFAULT "pending",
+        `order_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );';
+  mysqli_query(db_conn(), $create_order);
+  $create_Order_items  = 'CREATE TABLE IF NOT EXISTS `order_items` (
+        `order_item_id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        `order_id` INT NULL,
+        `qty` INT NULL,
+        `product_id` INT NULL
+    );';
+  mysqli_query(db_conn(), $create_Order_items);
 }
 create_tables();

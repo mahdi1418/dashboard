@@ -13405,3 +13405,48 @@ body {
     ul{
       list-style: none !important;
     }
+
+    .category-form {
+      background-color: #fff;
+      padding: 30px;
+          padding-top: 15px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .btn-primary {
+      background-color: #0d6efd;
+      border: none;
+      border-radius: 8px;
+    }
+    .btn-primary:hover {
+      background-color: #0b5ed7;
+    }
+      .category-container {
+    display: block !important;
+
+  }
+  .category-card,.order-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 20px 30px;
+    font-size: 18px;
+    color: #333;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-width: 140px;
+    text-align: left;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+  }
+  .category-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    color: #007BFF;
+  }
+i.plus:hover{
+  background-color: #2da44e;
+  color: white;
+  border-radius: 50%;
+}

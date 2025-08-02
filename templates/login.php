@@ -35,7 +35,7 @@ if (isset($_SESSION['user'])) {
                                             <label for="pass">Password</label>
                                         </div>
                                         <div class="d-flex align-items-center mt-4 mb-0 justify-content-center">
-                                            <button type="submit" class="btn btn-primary">Login</button>
+                                            <button type="submit" class="btn btn-primary" id="button">Login</button>
                                         </div>
                                         <div id="result" class="my-1 d-flex align-items-center justify-content-center">
                                         </div>

@@ -6,6 +6,8 @@ $(document).ready(function () {
         $pass = $('#pass').val();
         $email = $('#email').val();
         $pass2 = $('#pass2').val();
+        $('#register button[type=submit]').text('Please wait').removeClass('btn-primary').addClass('btn-warning');
+        $('#button').prop('disabled', true);
         $.ajax({
             url: 'handle.php',
             type: 'POST',
@@ -32,6 +34,8 @@ $(document).ready(function () {
         e.preventDefault();
         $email = $('#email').val();
         $password = $('#pass').val();
+        $('#login button[type=submit]').text('Please wait').removeClass('btn-primary').addClass('btn-warning');
+        $('#button').prop('disabled', true);
         $.ajax({
             url: 'handle.php',
             type: 'POST',
@@ -51,6 +55,7 @@ $(document).ready(function () {
             }
         });
     });
+
     $('#add_product').submit(function (e) {
         e.preventDefault();
         $title = $('#add_title_product').val();
@@ -70,23 +75,9 @@ $(document).ready(function () {
             },
             success: function (response) {
                 $('#result').html(response);
-                $('#proModal').hide();
-                $('#add_product')[0].reset();
-                var newProductHTML = `
-                    <div class="repo-item col-md-12 d-flex justify-content-between">
-                         <div>
-                             <a href="#" class="repo-title">${response.title}</a><br>
-                             <span class="dot dot-php"></span>${response.desc}
-                         </div>
-                         <div>
-                             <h5 class="m-0 mb-1 text-danger">${response.price} $</h5>
-                             <h6 class="m-0"></h6>
-                            <i class="fas fa-ellipsis-v px-3 py-2 pe-1 pt-2 mt-2"></i>
-                         </div>
-                     </div>
-                `;
-                $('#productList').append(newProductHTML);
-
+                setTimeout(function () {
+                    window.location.href = 'all-product.php';
+                }, 1000);
             },
             error: function () {
             }
@@ -94,30 +85,6 @@ $(document).ready(function () {
     });
     $('.fa-ellipsis-v').click(function () {
         $(this).siblings('div').fadeToggle(300);
-    });
-    $('#delete').click(function () {
-        if (confirm('Are you sure you want to delete this product?')) {
-
-            $proid = $('#proid').val();
-            $.ajax({
-                url: 'handle.php',
-                type: 'POST',
-                data: {
-                    proid: $proid,
-                    type: 'delete'
-                },
-                success: function (response) {
-                    console.log('The product has been removed');
-                },
-                error: function () {
-                }
-            });
-            history.go(0);
-            location.reload();
-        } else {
-            console.log('The delete operation was cancelled');
-        }
-
     });
     $('#pro_serach').keyup(function (e) {
         $word = $(this).val();
@@ -128,7 +95,7 @@ $(document).ready(function () {
                 type: 'POST',
                 data: {
                     word: $word,
-                    type: 'pro'
+                    type: 'pro_search'
                 },
                 success: function (response) {
                     $('#res_search').html(response)
@@ -150,5 +117,78 @@ $(document).ready(function () {
             delay: 250,
             disableOnInteraction: false,
         },
+    });
+
+    $('#add_user').submit(function (e) {
+        e.preventDefault();
+        $name = $('#newuserName').val();
+        $name2 = $('#newuserlName').val();
+        $email = $('#newuserEmail').val();
+        $pass = $('#newuserPass').val();
+        $pass2 = $('#newuserPass2').val();
+        $('#add_user button[type=submit]').text('Please wait').removeClass('btn-primary').addClass('btn-warning');
+        $('#button').prop('disabled', true);
+        $.ajax({
+            url: 'handle.php',
+            type: 'POST',
+            dataType: "json",
+            data: {
+                name: $name,
+                name2: $name2,
+                email: $email,
+                pass: $pass,
+                pass2: $pass2,
+                type: 'new_user'
+            },
+            success: function (response) {
+                $('#result').html(response);
+                setTimeout(function () {
+                    window.location.href = 'all-users.php';
+                }, 3000);
+            },
+            error: function () {
+            }
+        });
+    });
+    $('#categoreis').submit(function (e) {
+        e.preventDefault();
+        $categoryName = $('#categoryName').val();
+        $.ajax({
+            url: 'handle.php',
+            type: 'POST',
+            dataType: "json",
+            data: {
+                categoryName: $categoryName,
+                type: 'category'
+            },
+            success: function (response) {
+                $('#result').html(response);
+
+                $('#categoreis')[0].reset();
+                $('#categoreis #categoryName').val('');
+                var newProductHTML = `
+                     <div class="category-card">${response.category}</div>
+                `;
+                $('#category_list').append(newProductHTML);
+            },
+            error: function () {
+            }
+        });
+    });
+    $('[id^="order"]').click(function () {
+        let clickedId = $(this).attr('id').toLowerCase();
+        $.ajax({
+            url: 'handle.php',
+            type: 'POST',
+            dataType: 'json',
+            data: { type: 'order' },
+            success: function (response) {
+                $('#result').html(response.status);
+                $('form[class^="order"]').hide();
+                $('.' + clickedId).css('display', 'flex');
+                $('[id^="order"]').val(response.order_id);
+            },
+            error: function () { }
+        });
     });
 });

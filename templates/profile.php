@@ -1,20 +1,21 @@
 <?php
 require_once 'loader.php';
 require_once 'header.php';
-$conn = db_conn();
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 if (!isset($_SESSION['user'])) {
     header("location:$base_url/login");
-    exit;
 }
 $userNumber = $_SESSION['user'];
 
 $sql = "SELECT * FROM `users` WHERE `user_id` = '$userNumber'";
 $output2 = db_select_one($sql);
+
 ?>
-<title>Panel</title>
+
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
@@ -109,48 +110,49 @@ $output2 = db_select_one($sql);
                 </div>
             </nav>
         </div>
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Dashboard</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
-                    <div class="row">
-                        <div class="col-xl-4 col-md-6">
-                            <div class="card bg-success text-white mb-4">
-                                <div class="card-body">users</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="<?php base_url() ?>users">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-6">
-                            <div class="card bg-warning text-white mb-4">
-                                <div class="card-body">orders</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="<?php base_url() ?>orders">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-6">
-                            <div class="card bg-danger text-white mb-4">
-                                <div class="card-body">products</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="<?php base_url() ?>products">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
 
-                    </div>
+    <div class="d-flex" style="margin-left: 400px; margin-top: 100px; gap:90px">
+
+        <div class="modal-content">
+            <form id="editUserForm" action="handle.php" method="POST" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h3 class="modal-title me-1" id="editUserModalLabel"> profile </h3>
                 </div>
-            </main>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="userName" class="form-label">name</label>
+                        <input type="text" class="form-control" id="userName" name="userName" placeholder="<?php echo $output2['1']; ?>" value="<?php echo $output2['1']; ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="userName" class="form-label">last name</label>
+                        <input type="text" class="form-control" id="userName" name="userlName" placeholder="<?php echo $output2['2']; ?>" value="<?php echo $output2['2']; ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="userEmail" class="form-label">email</label>
+                        <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="<?php echo $output2['3']; ?>" value="<?php echo $output2['3']; ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="userEmail" class="form-label">image</label>
+                        <input type="file" class="form-control" id="userfile" name="files" value="<?php echo $output2['5']; ?>">
+                    </div>
 
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" name="edit_user">save</button>
+                </div>
+            </form>
+        </div>
+        <div class="text-center">
+            <img src="<?php echo base_url() . '/uploads/' . $output2[5] ?>" width="125px" height="125px" style="border-radius: 50%;">
+            <div class="d-flex text-center mt-4">
+                <h3 class="me-2"><?= $output2[1] ?></h3>
+                <h3><?= $output2[2] ?></h3>
+            </div>
+            <h5 class="text-center mb-3 text-secondary"><?= $output2[3] ?></h5>
         </div>
     </div>
+    </div>
+
     <?php
     require_once 'footer.php';
     ?>

@@ -1,20 +1,27 @@
 <?php
 require_once 'loader.php';
 require_once 'header.php';
-$conn = db_conn();
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 if (!isset($_SESSION['user'])) {
     header("location:$base_url/login");
-    exit;
 }
 $userNumber = $_SESSION['user'];
 
-$sql = "SELECT * FROM `users` WHERE `user_id` = '$userNumber'";
-$output2 = db_select_one($sql);
+$sql2 = "SELECT * FROM `users` WHERE `user_id` = '$userNumber'";
+$output2 = db_select_one($sql2);
+
+$check = mysqli_query($conn, "SELECT * FROM `users` ORDER BY `create_date` DESC");
+$num_rows = mysqli_num_rows($check);
+$output = mysqli_fetch_all($check, MYSQLI_NUM);
+
+$category = "SELECT * FROM `category`";
+$cate = db_select($category);
 ?>
-<title>Panel</title>
+
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
@@ -109,45 +116,33 @@ $output2 = db_select_one($sql);
                 </div>
             </nav>
         </div>
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Dashboard</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
-                    <div class="row">
-                        <div class="col-xl-4 col-md-6">
-                            <div class="card bg-success text-white mb-4">
-                                <div class="card-body">users</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="<?php base_url() ?>users">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-6">
-                            <div class="card bg-warning text-white mb-4">
-                                <div class="card-body">orders</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="<?php base_url() ?>orders">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-6">
-                            <div class="card bg-danger text-white mb-4">
-                                <div class="card-body">products</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="<?php base_url() ?>products">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
 
-                    </div>
+        <div id="result" class="position-absolute" style="right: 50%; top: 150px; transform: translateX(50%);">
+        </div>
+        <!-- 🧾 Content Area -->
+        <div id="layoutSidenav_content" class="p-4 position-absolute w-100 justify-content-start mt-5" style="right: 0; text-align: -webkit-center; width: 85% !important">
+            <form method="post" id="add_product">
+                <h3 style="color:#0d6efd;text-align:center;">add product</h3>
+
+                <div class="modal-content" style="text-align: left;">
+                    <label for="add_title_product" class="form-label ms-2">title</label>
+                    <input type="text" placeholder="title" id="add_title_product" required>
+                    <label for="add_desc_product" class="form-label ms-2">desc</label>
+                    <input type="text" placeholder="description" id="add_desc_product" required>
+                    <label for="add_price_product" class="form-label ms-2">price</label>
+                    <input type="number" step="0.01" min="0" placeholder="price" id="add_price_product" required>
+                    <label for="category" class="form-label ms-2">category</label>
+                    <select name="category" id="category" class="form-select" required>
+                        <?php
+                        foreach ($cate as $item) { ?>
+                            <option value="<?php echo $item[1] ?>"><?php echo $item[1] ?></option>
+                        <?php }
+                        ?>
+                    </select>
+                    <button type="submit" name="submit-task">add</button>
                 </div>
-            </main>
+                <!-- </div> -->
+            </form>
 
         </div>
     </div>

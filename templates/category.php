@@ -2,19 +2,23 @@
 require_once 'loader.php';
 require_once 'header.php';
 $conn = db_conn();
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 if (!isset($_SESSION['user'])) {
     header("location:$base_url/login");
-    exit;
 }
 $userNumber = $_SESSION['user'];
 
-$sql = "SELECT * FROM `users` WHERE `user_id` = '$userNumber'";
-$output2 = db_select_one($sql);
+$sql2 = "SELECT * FROM `users` WHERE `user_id` = '$userNumber'";
+$output2 = db_select_one($sql2);
+
+$category = "SELECT * FROM `category`";
+$cate = db_select($category);
 ?>
-<title>Panel</title>
+
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
@@ -109,48 +113,54 @@ $output2 = db_select_one($sql);
                 </div>
             </nav>
         </div>
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Dashboard</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
-                    <div class="row">
-                        <div class="col-xl-4 col-md-6">
-                            <div class="card bg-success text-white mb-4">
-                                <div class="card-body">users</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="<?php base_url() ?>users">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-6">
-                            <div class="card bg-warning text-white mb-4">
-                                <div class="card-body">orders</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="<?php base_url() ?>orders">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-6">
-                            <div class="card bg-danger text-white mb-4">
-                                <div class="card-body">products</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="<?php base_url() ?>products">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
 
+        <div id="result" class="position-absolute" style="right: 50%; top: 150px; transform: translateX(50%);">
+        </div>
+        <!-- 🧾 Content Area -->
+        <div id="layoutSidenav_content" class="p-4 position-absolute w-100 justify-content-start" style="right: 0; text-align: -webkit-center; width: 85% !important">
+            <div id="cate">
+                <div class="container-fluid">
+                    <div class="category-form">
+                        <h4 class="mb-4 text-center">Add New Category</h4>
+                        <form method="POST" id="categoreis">
+                            <div class="mb-3">
+                                <label for="categoryName" class="form-label">Category Name</label>
+                                <input type="text" class="form-control" id="categoryName" name="category_name" placeholder="Enter category name" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Add Category</button>
+                        </form>
+                    </div>
+                    <div class="category-form mt-2" id="myDiv" tabindex="0">
+                        <h2 style="text-align:center; margin-bottom:30px;">categories </h2>
+
+                        <div class="category-container" id="category_list">
+                            <?php foreach ($cate as $cat): ?>
+                                <div class="category-card">
+                                    <p class="m-0"><?= htmlspecialchars($cat[1]) ?></p>
+                                    <?php
+                                    $sql = "SELECT * FROM `products` where `products`.`category` = '$cat[1]'";
+                                    $rows = mysqli_query($conn,$sql);
+                                    $row = mysqli_num_rows($rows);
+                                    echo '<p class="m-0">'."There are ".$row . " products in the ".$cat[1] ." category".'</p>';
+                                    ?>
+                                    <a class="p-1" type="button" href="<?php base_url() ?>handle.php?type=category-delete&icd=<?php echo $cat[0]; ?>"><i class="fas fa-trash-alt text-danger"></i></a>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
                 </div>
-            </main>
+            </div>
 
         </div>
-    </div>
-    <?php
-    require_once 'footer.php';
-    ?>
+        <script>
+            $(document).ready(function() {
+                if (window.location.hash === "#cate") {
+                    $('#categoryName').focus();
+                }
+            });
+            const div = document.getElementById('myDiv');
+            div.focus();
+        </script>
+        <?php
+        require_once 'footer.php';
+        ?>
